@@ -140,17 +140,51 @@
                     <div id="searchResults" class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden search-results z-10"></div>
                 </div>
 
-                <!-- Cart and Mobile Menu -->
+
+                
+                <!-- Cart, Login, Signup -->
                 <div class="flex items-center space-x-4">
                     <button id="cartBtn" class="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
                         <i class="fas fa-shopping-cart text-xl"></i>
                         <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
                     </button>
-                    
+                    <button id="loginBtn" class="px-4 py-2 text-sm font-medium text-gray-700 border rounded hover:bg-gray-100">Login</button>
+                    <button id="signupBtn" class="px-4 py-2 text-sm font-medium text-white gradient-bg rounded">Signup</button>
                     <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-700">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login/Signup Modal -->
+    <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg w-full max-w-md p-6 transform scale-95 opacity-0 transition-all duration-200" id="authModalContent">
+            <!-- Tabs -->
+            <div class="flex border-b mb-4">
+                <button id="loginTab" class="flex-1 py-2 text-center font-medium border-b-2 border-blue-600 text-blue-600">Login</button>
+                <button id="signupTab" class="flex-1 py-2 text-center font-medium text-gray-600">Signup</button>
+            </div>
+            <!-- Login Form -->
+            <div id="loginForm">
+                <input type="email" placeholder="Email" class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="password" placeholder="Password" class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button class="w-full gradient-bg text-white py-2 rounded hover:opacity-90">Login</button>
+            </div>
+            <!-- Signup Form -->
+            <div id="signupForm" class="hidden">
+                <input type="text" placeholder="Name" class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="email" placeholder="Email" class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="password" placeholder="Password" class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="password" placeholder="Confirm Password" class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button class="w-full gradient-bg text-white py-2 rounded hover:opacity-90">Signup</button>
+            </div>
+            <!-- Close -->
+            <button id="closeAuthModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+               
             </div>
         </div>
 
@@ -781,6 +815,63 @@ modalAddToCart.addEventListener('click', () => {
     }
 });
 
+ const authModal = document.getElementById("authModal");
+    const authModalContent = document.getElementById("authModalContent");
+    const loginBtn = document.getElementById("loginBtn");
+    const signupBtn = document.getElementById("signupBtn");
+    const closeAuthModal = document.getElementById("closeAuthModal");
+    const loginTab = document.getElementById("loginTab");
+    const signupTab = document.getElementById("signupTab");
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+
+    function openAuthModal(defaultTab = "login") {
+        authModal.classList.remove("hidden");
+        setTimeout(() => {
+            authModalContent.classList.remove("scale-95", "opacity-0");
+            authModalContent.classList.add("scale-100", "opacity-100");
+        }, 10);
+        if (defaultTab === "login") {
+            showLogin();
+        } else {
+            showSignup();
+        }
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+        authModalContent.classList.remove("scale-100", "opacity-100");
+        authModalContent.classList.add("scale-95", "opacity-0");
+        setTimeout(() => {
+            authModal.classList.add("hidden");
+            document.body.style.overflow = "auto";
+        }, 200);
+    }
+
+    function showLogin() {
+        loginForm.classList.remove("hidden");
+        signupForm.classList.add("hidden");
+        loginTab.classList.add("border-b-2", "border-blue-600", "text-blue-600");
+        loginTab.classList.remove("text-gray-600");
+        signupTab.classList.remove("border-b-2", "border-blue-600", "text-blue-600");
+        signupTab.classList.add("text-gray-600");
+    }
+
+    function showSignup() {
+        signupForm.classList.remove("hidden");
+        loginForm.classList.add("hidden");
+        signupTab.classList.add("border-b-2", "border-blue-600", "text-blue-600");
+        signupTab.classList.remove("text-gray-600");
+        loginTab.classList.remove("border-b-2", "border-blue-600", "text-blue-600");
+        loginTab.classList.add("text-gray-600");
+    }
+
+    loginBtn.addEventListener("click", () => openAuthModal("login"));
+    signupBtn.addEventListener("click", () => openAuthModal("signup"));
+    closeAuthModal.addEventListener("click", closeModal);
+    loginTab.addEventListener("click", showLogin);
+    signupTab.addEventListener("click", showSignup);
+    authModal.addEventListener("click", (e) => { if (e.target === authModal) closeModal(); });
 
     </script>
 </body>
