@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Orders - ShopSphere</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="max-w-4xl mx-auto my-12 p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold mb-6">My Orders</h2>
+
+    <div id="ordersList">
+      <!-- Orders will be rendered here -->
+    </div>
+  </div>
+
+  <script>
+    const orders = JSON.parse(localStorage.getItem('recentOrders')) || [];
+    const ordersList = document.getElementById('ordersList');
+
+    if (orders.length === 0) {
+      ordersList.innerHTML = `<p class="text-gray-500 text-lg">You haven’t placed any orders yet.</p>`;
+    } else {
+      orders.forEach((order, index) => {
+        const item = document.createElement('div');
+        item.className = "border border-gray-300 rounded-lg p-4 mb-4 bg-gray-50";
+
+        item.innerHTML = `
+          <div class="flex justify-between items-center mb-2">
+            <h4 class="text-xl font-semibold">${order.product}</h4>
+            <span class="text-sm text-gray-500">Order #${index + 1}</span>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <p><span class="font-semibold">Quantity:</span> ${order.qty}</p>
+            <p><span class="font-semibold">Total:</span> ₹${order.total.toFixed(2)}</p>
+            <p><span class="font-semibold">Payment:</span> ${order.payment.toUpperCase()}</p>
+            <p><span class="font-semibold">Delivery:</span> ${order.delivery}</p>
+          </div>
+        `;
+        ordersList.appendChild(item);
+      });
+    }
+  </script>
+</body>
+</html>

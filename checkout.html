@@ -33,6 +33,10 @@
       <label><input type="radio" name="payment" value="card"> Credit/Debit Card</label>
     </div>
 
+    <!-- Delivery Estimate -->
+<h3 class="text-xl font-semibold mt-8 mb-2">Delivery Estimate</h3>
+<p class="text-gray-600 mb-6" id="deliveryEstimate">Calculating...</p>
+
     <!-- Confirm Button -->
     <button onclick="confirmOrder()" class="w-full bg-green-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition">
       Confirm Order
@@ -48,31 +52,76 @@
         <img src="${product.image}" alt="${product.name}" class="w-32 h-32 object-cover rounded-lg border">
         <div>
           <h4 class="text-2xl font-semibold">${product.name}</h4>
-          <p class="text-blue-600 font-bold text-xl">₹${product.price.toFixed(2)}</p>
+          <div class="flex items-center gap-4 mt-2">
+  <label class="font-medium">Qty:</label>
+  <input id="productQty" type="number" min="1" value="1" class="w-20 px-3 py-1 border rounded text-center">
+</div>
+<p id="totalPrice" class="text-blue-600 font-bold text-xl mt-2">₹${product.price.toFixed(2)}</p>
+
           <p class="text-sm text-gray-500">Category: ${product.category}</p>
         </div>
       `;
     } else {
       productSummary.innerHTML = `<p class="text-red-600">No product selected. Please go back to the store.</p>`;
     }
+const qtyInput = document.getElementById('productQty');
+const totalPriceDisplay = document.getElementById('totalPrice');
+
+qtyInput.addEventListener('input', () => {
+  const qty = Math.max(1, parseInt(qtyInput.value) || 1);
+  totalPriceDisplay.textContent = `₹${(product.price * qty).toFixed(2)}`;
+});
+
 
     function confirmOrder() {
-      const name = document.getElementById("fullname").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const address = document.getElementById("address").value.trim();
-      const city = document.getElementById("city").value.trim();
-      const pincode = document.getElementById("pincode").value.trim();
-      const payment = document.querySelector('input[name="payment"]:checked').value;
+  const name = document.getElementById("fullname").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const city = document.getElementById("city").value.trim();
+  const pincode = document.getElementById("pincode").value.trim();
+  const payment = document.querySelector('input[name="payment"]:checked').value;
+  const qty = Math.max(1, parseInt(document.getElementById("productQty").value) || 1);
 
-      if (!name || !phone || !address || !city || !pincode) {
-        alert("Please fill out all address fields.");
-        return;
-      }
+  if (!name || !phone || !address || !city || !pincode) {
+    alert("Please fill out all address fields.");
+    return;
+  }
 
-      alert(`🎉 Order confirmed!\n\nName: ${name}\nPhone: ${phone}\nAddress: ${address}, ${city}, ${pincode}\nPayment: ${payment.toUpperCase()}\n\nProduct: ${product.name} - ₹${product.price}`);
-      localStorage.removeItem('checkoutProduct');
-      window.location.href = "index.html";
-    }
+  // Save address
+  localStorage.setItem("savedAddress", JSON.stringify({ name, phone, address, city, pincode }));
+
+  // Save order
+  const newOrder = {
+    product: product.name,
+    price: product.price,
+    qty,
+    total: product.price * qty,
+    payment,
+    delivery: `${getDeliveryDate(5)} - ${getDeliveryDate(7)}`
+  };
+
+  const orders = JSON.parse(localStorage.getItem("recentOrders")) || [];
+  orders.push(newOrder);
+  localStorage.setItem("recentOrders", JSON.stringify(orders));
+
+  alert(`🎉 Order confirmed!\n\nProduct: ${product.name} ×${qty}\nTotal: ₹${(product.price * qty).toFixed(2)}\nDelivery: ${newOrder.delivery}`);
+  localStorage.removeItem('checkoutProduct');
+  window.location.href = "index.html";
+}
+
+
+    function getDeliveryDate(daysToAdd = 5) {
+  const date = new Date();
+  date.setDate(date.getDate() + daysToAdd);
+  return date.toLocaleDateString('en-IN', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short'
+  });
+}
+
+document.getElementById('deliveryEstimate').textContent = `Expected delivery by ${getDeliveryDate(5)} - ${getDeliveryDate(7)}`;
+
   </script>
 </body>
 </html>
