@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout - ShopSphere</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="max-w-4xl mx-auto my-12 p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold mb-6">Checkout</h2>
+
+    <!-- Product Summary -->
+    <div id="productSummary" class="flex items-center gap-6 mb-8">
+      <!-- Filled via JS -->
+    </div>
+
+    <!-- Address Form -->
+    <h3 class="text-xl font-semibold mb-2">Shipping Address</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <input type="text" id="fullname" placeholder="Full Name" class="border p-3 rounded" required>
+      <input type="text" id="phone" placeholder="Phone Number" class="border p-3 rounded" required>
+      <input type="text" id="address" placeholder="Address" class="border p-3 rounded col-span-2" required>
+      <input type="text" id="city" placeholder="City" class="border p-3 rounded">
+      <input type="text" id="pincode" placeholder="Pincode" class="border p-3 rounded">
+    </div>
+
+    <!-- Payment Options -->
+    <h3 class="text-xl font-semibold mb-2">Payment Method</h3>
+    <div class="flex gap-6 mb-8">
+      <label><input type="radio" name="payment" value="cod" checked> Cash on Delivery</label>
+      <label><input type="radio" name="payment" value="upi"> UPI</label>
+      <label><input type="radio" name="payment" value="card"> Credit/Debit Card</label>
+    </div>
+
+    <!-- Confirm Button -->
+    <button onclick="confirmOrder()" class="w-full bg-green-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition">
+      Confirm Order
+    </button>
+  </div>
+
+  <script>
+    const product = JSON.parse(localStorage.getItem('checkoutProduct'));
+    const productSummary = document.getElementById('productSummary');
+
+    if (product) {
+      productSummary.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" class="w-32 h-32 object-cover rounded-lg border">
+        <div>
+          <h4 class="text-2xl font-semibold">${product.name}</h4>
+          <p class="text-blue-600 font-bold text-xl">₹${product.price.toFixed(2)}</p>
+          <p class="text-sm text-gray-500">Category: ${product.category}</p>
+        </div>
+      `;
+    } else {
+      productSummary.innerHTML = `<p class="text-red-600">No product selected. Please go back to the store.</p>`;
+    }
+
+    function confirmOrder() {
+      const name = document.getElementById("fullname").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const pincode = document.getElementById("pincode").value.trim();
+      const payment = document.querySelector('input[name="payment"]:checked').value;
+
+      if (!name || !phone || !address || !city || !pincode) {
+        alert("Please fill out all address fields.");
+        return;
+      }
+
+      alert(`🎉 Order confirmed!\n\nName: ${name}\nPhone: ${phone}\nAddress: ${address}, ${city}, ${pincode}\nPayment: ${payment.toUpperCase()}\n\nProduct: ${product.name} - ₹${product.price}`);
+      localStorage.removeItem('checkoutProduct');
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

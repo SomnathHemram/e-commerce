@@ -429,9 +429,15 @@
         <span id="modalDiscount" class="bg-red-100 text-red-800 text-xs font-medium ml-2 px-2 py-0.5 rounded"></span>
       </div>
       <p id="modalDescription" class="text-gray-700 mb-6"></p>
-      <button id="modalAddToCart" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-        Add to Cart
-      </button>
+      <div class="flex gap-3">
+  <button id="modalAddToCart" class="w-1/2 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+    Add to Cart
+  </button>
+  <button id="modalBuyNow" class="w-1/2 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors font-medium">
+    Buy Now
+  </button>
+</div>
+
     </div>
   </div>
 </div>
@@ -441,18 +447,18 @@
     <script>
         // Product Data
         const products = [
-            { id: 1, name: "Premium Wireless Headphones", price: 199.99, originalPrice: 249.99, discount: 20, category: "electronics", image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d4db4ce8-4347-4376-a6e5-741b55f30b03.png", alt: "Premium black wireless over-ear headphones with noise cancellation and modern sleek design" },
-            { id: 2, name: "Smart Watch Series X", price: 299.99, originalPrice: 349.99, discount: 15, category: "electronics", image: "https://placehold.co/300x300", alt: "Modern smartwatch with black sport band, digital display showing fitness metrics and notifications" },
-            { id: 3, name: "Designer Leather Jacket", price: 249.99, originalPrice: 356.99, discount: 30, category: "fashion", image: "https://placehold.co/300x300", alt: "Classic black leather jacket with silver zippers and contemporary cut displayed on mannequin" },
-            { id: 4, name: "Running Shoes Pro", price: 129.99, originalPrice: 199.99, discount: 35, category: "sports", image: "https://placehold.co/300x300", alt: "Professional running shoes in bright blue and white with advanced cushioning and breathable mesh" },
-            { id: 5, name: "Modern Coffee Table", price: 399.99, originalPrice: 470.99, discount: 15, category: "home", image: "https://placehold.co/300x300", alt: "Minimalist wooden coffee table with clean lines and metal legs in contemporary living room setting" },
-            { id: 6, name: "Smartphone 128GB", price: 699.99, originalPrice: 823.99, discount: 25, category: "electronics", image: "https://placehold.co/300x300", alt: "Latest smartphone in space gray with edge-to-edge display and premium glass finish" },
-            { id: 7, name: "Casual Summer Dress", price: 79.99, originalPrice: 93.99, discount: 15, category: "fashion", image: "https://placehold.co/300x300", alt: "Flowing summer dress in light blue floral pattern with comfortable fit for casual wear" },
-            { id: 8, name: "Yoga Mat Premium", price: 49.99, originalPrice: 60.99, discount: 18, category: "sports", image: "https://placehold.co/300x300", alt: "Professional yoga mat in purple color with non-slip surface and carrying strap" },
-            { id: 9, name: "Table Lamp Set", price: 89.99, originalPrice: 119.99, discount: 25, category: "home", image: "https://placehold.co/300x300", alt: "Set of two modern table lamps with white ceramic base and fabric lampshades providing warm lighting" },
-            { id: 10, name: "Wireless Earbuds", price: 159.99, originalPrice: 188.22, discount: 15, category: "electronics", image: "https://placehold.co/300x300", alt: "Compact white wireless earbuds in charging case with LED indicators and touch controls" },
-            { id: 11, name: "Winter Coat", price: 179.99, originalPrice: 224.99, discount: 20, category: "fashion", image: "https://placehold.co/300x300", alt: "Warm winter coat in navy blue with fur-lined hood and multiple pockets for cold weather" },
-            { id: 12, name: "Tennis Racket Pro", price: 199.99, originalPrice: 222.21, discount: 10, category: "sports", image: "https://placehold.co/300x300", alt: "Professional tennis racket with carbon fiber frame and grip tape for competitive play" }
+            { id: 1, name: "Premium Wireless Headphones", price: 199.99, originalPrice: 249.99, discount: 20, category: "electronics", image: "https://images.pexels.com/photos/33433111/pexels-photo-33433111.jpeg", alt: "Premium black wireless over-ear headphones with noise cancellation and modern sleek design" },
+            { id: 2, name: "Smart Watch Series X", price: 299.99, originalPrice: 349.99, discount: 15, category: "electronics", image: "https://images.pexels.com/photos/440320/pexels-photo-440320.jpeg", alt: "Modern smartwatch with black sport band, digital display showing fitness metrics and notifications" },
+            { id: 3, name: "Designer Leather Jacket", price: 249.99, originalPrice: 356.99, discount: 30, category: "fashion", image: "https://images.pexels.com/photos/5490198/pexels-photo-5490198.jpeg", alt: "Classic black leather jacket with silver zippers and contemporary cut displayed on mannequin" },
+            { id: 4, name: "Running Shoes Pro", price: 129.99, originalPrice: 199.99, discount: 35, category: "sports", image: "https://images.pexels.com/photos/1456706/pexels-photo-1456706.jpeg", alt: "Professional running shoes in bright blue and white with advanced cushioning and breathable mesh" },
+            { id: 5, name: "Modern Coffee Table", price: 399.99, originalPrice: 470.99, discount: 15, category: "home", image:"https://images.pexels.com/photos/890669/pexels-photo-890669.jpeg", alt: "Minimalist wooden coffee table with clean lines and metal legs in contemporary living room setting" },
+            { id: 6, name: "Smartphone 128GB", price: 699.99, originalPrice: 823.99, discount: 25, category: "electronics", image: "https://images.pexels.com/photos/24613611/pexels-photo-24613611.jpeg", alt: "Latest smartphone in space gray with edge-to-edge display and premium glass finish" },
+            { id: 7, name: "Casual Summer Dress", price: 79.99, originalPrice: 93.99, discount: 15, category: "fashion", image: "https://images.pexels.com/photos/3577349/pexels-photo-3577349.jpeg", alt: "Flowing summer dress in light blue floral pattern with comfortable fit for casual wear" },
+            { id: 8, name: "Yoga Mat Premium", price: 49.99, originalPrice: 60.99, discount: 18, category: "sports", image: "https://images.pexels.com/photos/6193711/pexels-photo-6193711.jpeg", alt: "Professional yoga mat in purple color with non-slip surface and carrying strap" },
+            { id: 9, name: "Table Lamp Set", price: 89.99, originalPrice: 119.99, discount: 25, category: "home", image: "https://images.pexels.com/photos/1166643/pexels-photo-1166643.jpeg", alt: "Set of two modern table lamps with white ceramic base and fabric lampshades providing warm lighting" },
+            { id: 10, name: "Wireless Earbuds", price: 159.99, originalPrice: 188.22, discount: 15, category: "electronics", image: "https://images.pexels.com/photos/33444591/pexels-photo-33444591.jpeg", alt: "Compact white wireless earbuds in charging case with LED indicators and touch controls" },
+            { id: 11, name: "Winter Coat", price: 179.99, originalPrice: 224.99, discount: 20, category: "fashion", image: "https://images.pexels.com/photos/837129/pexels-photo-837129.jpeg", alt: "Warm winter coat in navy blue with fur-lined hood and multiple pockets for cold weather" },
+            { id: 12, name: "Tennis Racket Pro", price: 199.99, originalPrice: 222.21, discount: 10, category: "sports", image: "https://images.pexels.com/photos/5739111/pexels-photo-5739111.jpeg", alt: "Professional tennis racket with carbon fiber frame and grip tape for competitive play" }
         ];
 
         // Cart functionality
@@ -762,6 +768,18 @@ const modalOriginalPrice = document.getElementById('modalOriginalPrice');
 const modalDiscount = document.getElementById('modalDiscount');
 const modalDescription = document.getElementById('modalDescription');
 const modalAddToCart = document.getElementById('modalAddToCart');
+const modalBuyNow = document.getElementById('modalBuyNow');
+
+modalBuyNow.addEventListener('click', () => {
+  if (selectedProductId !== null) {
+    const product = products.find(p => p.id === selectedProductId);
+    if (product) {
+      localStorage.setItem('checkoutProduct', JSON.stringify(product));
+      closeProductModal(); // Optional: close modal before navigating
+      window.location.href = 'checkout.html';
+    }
+  }
+});
 
 let selectedProductId = null;
 
